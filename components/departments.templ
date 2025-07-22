@@ -1,0 +1,22 @@
+package components
+
+import "www.example.com/met/models"
+
+templ DepartmentList(departments []models.Department) {
+    @Base("Met museum Departments") {
+        <div id="department-list" class="department-list">
+            <ul>
+                for _, department := range departments {
+                    <li>
+                        <h1 class="text-red-500 flex ">{ department.DepartmentID }</h1>
+                        <h2>
+                            <a href={ templ.SafeURL("/departments/" + department.DisplayName) }>
+                                Department name: { department.DisplayName }
+                            </a>
+                        </h2>
+                    </li>
+                }
+            </ul>
+        </div>
+    }
+}
