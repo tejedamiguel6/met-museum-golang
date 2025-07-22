@@ -35,29 +35,33 @@ func GetCollectionObjects() (models.CollectionObjects, error) {
 
 }
 
-func GetCollectionObjectItem(id int) (*models.CollectionObjectItem, error) {
-	url := fmt.Sprintf("https://collectionapi.metmuseum.org/public/collection/v1/objects/%d", id)
+func GetCollectionObjectItems(ids []int) ([]models.CollectionObjectItem, error) {
+	var results []models.CollectionObjectItem
 
-	req, err := http.NewRequest("GET", url, nil)
-	if err != nil {
-		fmt.Println("error at GETCOLLECTION OBJECT:", err)
+	for _, id := range ids {
+		url := fmt.Sprintf("https://collectionapi.metmuseum.org/public/collection/v1/objects/%d", id)
+
+		req, err := http.NewRequest("GET", url, nil)
+		if err != nil {
+			fmt.Println("error at GETCOLLECTION OBJECT:", err)
+		}
+
+		res, err := http.DefaultClient.Do(req)
+		if err != nil {
+			fmt.Println("error at GETCOLLECTION OBJECT:", err)
+		}
+		defer res.Body.Close()
+
+		var item models.CollectionObjectItem
+		if err := json.NewDecoder(res.Body).Decode(&item); err != nil {
+			fmt.Println("new error in decoder", err)
+		}
+
+		fmt.Println("id:", id)
+		fmt.Println("RESULTS-->:", &item)
+		results = append(results, item)
 	}
 
-	res, err := http.DefaultClient.Do(req)
-	if err != nil {
-		fmt.Println("error at GETCOLLECTION OBJECT:", err)
-	}
-	defer res.Body.Close()
-
-	var collectionObjectResponse models.CollectionObjectItem
-
-	if err := json.NewDecoder(res.Body).Decode(&collectionObjectResponse); err != nil {
-		fmt.Println("new error in decoder", err)
-	}
-
-	fmt.Println("id:", id)
-	fmt.Println("RESULTS-->:", &collectionObjectResponse)
-
-	return &collectionObjectResponse, nil
+	return results, nil
 
 }

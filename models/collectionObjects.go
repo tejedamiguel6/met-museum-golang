@@ -5,6 +5,7 @@ type CollectionObjects struct {
 	ObjectIDs []int `json:"objectIDs"`
 }
 
+// single item
 type CollectionObjectItem struct {
 	ObjectID          int      `json:"objectID"`
 	IsHighlight       bool     `json:"isHighlight"`

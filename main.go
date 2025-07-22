@@ -18,19 +18,19 @@ func main() {
 		handlers.Home(c.Writer, c.Request)
 	})
 
+	// Department routes
 	router.GET("/met", func(c *gin.Context) {
 		fmt.Println("hello World!")
 		handlers.DepartmentList(c.Writer, c.Request)
 	})
 
+	// Collections routes
 	router.GET("/collections", func(c *gin.Context) {
 		fmt.Println("getting collection objects")
 		handlers.CollectionObjectList(c.Writer, c.Request)
-
 	})
 
 	router.GET("/collection/:id", handlers.GetCollectionObjIDItem)
 
 	router.Run(":8085")
-
 }

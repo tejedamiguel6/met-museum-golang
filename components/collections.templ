@@ -1,0 +1,57 @@
+package components
+
+import "www.example.com/met/models"
+
+templ CollectionList(items []models.CollectionObjectItem) {
+    @Base("Met Museum - Collections") {
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+            <!-- Page Header -->
+            <div class="text-center mb-8">
+                <h1 class="text-4xl font-bold text-gray-900 mb-4">Museum Collections</h1>
+                <p class="text-lg text-gray-600">Explore our extensive collection of artworks and artifacts</p>
+            </div>
+
+            <!-- Collection Grid -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                for _, item := range items {
+                    <div class="bg-white rounded-lg shadow-lg overflow-hidden hover:shadow-xl transition-shadow duration-300">
+                        <!-- Image -->
+                        if item.PrimaryImageSmall != "" {
+                            <img src={ item.PrimaryImageSmall } alt={ item.Title } class="w-full h-64 object-cover" />
+                        } else {
+                            <div class="w-full h-64 flex items-center justify-center bg-gray-100 text-gray-500 text-sm">
+                                No Image Available
+                            </div>
+                        }
+
+                        <!-- Details -->
+                        <div class="p-4">
+                            <h2 class="text-lg font-bold text-gray-800">{ item.Title }</h2>
+                            <p class="text-sm text-gray-500">{ item.ObjectName } · { item.Department }</p>
+
+                            <!-- Artist -->
+                            if len(item.Constituents) > 0 {
+                                <p class="mt-2 text-gray-500">
+                                    <strong>Artist:</strong> { item.Constituents[0].Name }
+                                </p>
+                            }
+
+                            <!-- Medium -->
+                            <p class="mt-1 text-gray-600">
+                                <strong>Medium:</strong> { item.Medium }
+                            </p>
+
+                            <!-- Link -->
+                            <div class="mt-3">
+                                <a href={ item.ObjectURL } target="_blank"
+                                    class="text-blue-500 hover:underline text-sm">
+                                    View on Met Museum →
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    }
+}
